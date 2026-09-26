@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# WAJIB untuk Single Page App (React Router): tanpa ini, akses langsung
+# atau refresh di route selain "/" (misal /kasir, /admin, /order/:token)
+# akan 404 karena Netlify mencari file fisik yang memang tidak ada.
+# Redirect ini bikin SEMUA path diarahkan ke index.html, lalu React Router
+# yang menangani routing di sisi browser.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

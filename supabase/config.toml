@@ -1,0 +1,26 @@
+# Konfigurasi Supabase CLI lokal — dibuat manual sebagai starting point
+# (bukan hasil `supabase init`, karena project belum di-link ke Supabase
+# CLI di sandbox ini). Ganti `project_id` setelah owner buat project asli.
+project_id = "gagi"
+
+[api]
+enabled = true
+
+[db]
+port = 54322
+
+[auth]
+enabled = true
+# Matikan sign-up publik (ARCHITECTURE.md §5.8) — untuk project LIVE,
+# ini diset lewat Dashboard > Authentication > Sign In / Providers >
+# "Allow new users to sign up" = OFF, bukan lewat file ini.
+enable_signup = false
+
+# Bug/Isu #6 (TODO.md, 2026-09-08): Midtrans memanggil webhook ini langsung
+# dari server mereka tanpa header Authorization Supabase — kalau verify_jwt
+# default (true) dibiarkan, gateway menolak semua notifikasi Midtrans dengan
+# 401 SEBELUM kode function sempat verifikasi signature_key sendiri. Function
+# lain (public-checkout/get-order/resume-payment) TIDAK butuh override ini
+# karena dipanggil supabase-js dari browser yang otomatis kirim anon key.
+[functions.midtrans-webhook]
+verify_jwt = false
